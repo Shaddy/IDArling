@@ -199,7 +199,7 @@ class OpenActionHandler(ActionHandler):
 
     def _file_downloaded(self, database, progress, reply):
         """Called when the file has been downloaded."""
-        progress.close()
+        # progress.close()
 
         # Get the absolute path of the file
         app_path = QCoreApplication.applicationFilePath()
