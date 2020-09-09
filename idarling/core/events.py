@@ -47,27 +47,27 @@ class Event(DefaultEvent):
     def encode(s):
         """Encodes a unicode string into UTF-8 bytes."""
         if not isinstance(s, unicode):
-            return s
-        return s.encode("utf-8")
+            return s.encode("utf-8")
+        return s
 
     @staticmethod
     def encode_bytes(s):
         """Encodes a unicode string into raw bytes."""
         if not isinstance(s, unicode):
-            return s
-        return s.encode("raw_unicode_escape")
+            return s.encode("raw_unicode_escape")
+        return s
 
     @staticmethod
     def decode(s):
         """Decodes UTF-8 bytes into a unicode string."""
-        if not isinstance(s, str):
+        if not isinstance(s, bytes):
             return s
         return s.decode("utf-8")
 
     @staticmethod
     def decode_bytes(s):
         """Decodes raw bytes into a unicode string."""
-        if not isinstance(s, str):
+        if not isinstance(s, bytes):
             return s
         return s.decode("raw_unicode_escape")
 
@@ -112,9 +112,13 @@ class RenamedEvent(Event):
 
     def __call__(self):
         flags = ida_name.SN_LOCAL if self.local_name else 0
-        ida_name.set_name(
-            self.ea, Event.encode(self.new_name), flags | ida_name.SN_NOWARN
-        )
+
+        try:
+            ida_name.set_name(
+                self.ea, Event.encode(self.new_name), flags | ida_name.SN_NOWARN
+            )
+        except:
+            raise Exception(repr((self.ea, Event.encode(self.new_name), flags | ida_name.SN_NOWARN)))
         ida_kernwin.request_refresh(ida_kernwin.IWID_DISASMS)
         HexRaysEvent.refresh_pseudocode_view(self.ea)
 

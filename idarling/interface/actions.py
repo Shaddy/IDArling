@@ -123,7 +123,7 @@ class ActionHandler(ida_kernwin.action_handler_t):
     def _on_progress(progress, count, total):
         """Called when some progress has been made."""
         progress.setRange(0, total)
-        # progress.setValue(total)
+        progress.setValue(total)
 
     def __init__(self, plugin):
         super(ActionHandler, self).__init__()
@@ -199,7 +199,7 @@ class OpenActionHandler(ActionHandler):
 
     def _file_downloaded(self, database, progress, reply):
         """Called when the file has been downloaded."""
-        # progress.close()
+        progress.close()
 
         # Get the absolute path of the file
         app_path = QCoreApplication.applicationFilePath()
