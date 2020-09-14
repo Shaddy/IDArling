@@ -280,7 +280,7 @@ class TiChangedEvent(Event):
         if len(py_type) >= 2:
             ida_typeinf.apply_type(
                 None,
-                py_type[0],
+                bytes([py_type[0]]),  # DefaultEvent(type=event, event_type=ti_changed, ea=4278195233, py_type=['\x1b\x052', ''])
                 py_type[1],
                 self.ea,
                 ida_typeinf.TINFO_DEFINITE,
