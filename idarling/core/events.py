@@ -387,7 +387,7 @@ class OpTypeChangedEvent(Event):
         if self.op == "oct":
             ida_bytes.op_oct(self.ea, self.n)
         if self.op == "offset":
-            ida_idc.op_plain_offset(self.ea, self.n, 0)
+            op_plain_offset(self.ea, self.n, 0)
         if self.op == "enum":
             id = ida_enum.get_enum((self.extra["ename"]))
             ida_bytes.op_enum(self.ea, self.n, id, self.extra["serial"])
@@ -590,12 +590,7 @@ class StrucMemberCreatedEvent(Event):
         if ida_bytes.is_struct(self.flag):
             mt.tid = self.extra["id"]
         if ida_bytes.is_off0(self.flag) or ida_bytes.is_off1(self.flag):
-            mt.ri = ida_nalt.refinfo_t(
-                self.extra["flags"],
-                self.extra["base"],
-                self.extra["target"],
-                self.extra["tdelta"],
-            )
+            mt.ri = ida_nalt.refinfo_t()
         if ida_bytes.is_strlit(self.flag):
             mt.strtype = self.extra["strtype"]
         struc = ida_struct.get_struc_id(self.sname)
@@ -626,12 +621,7 @@ class StrucMemberChangedEvent(Event):
         if ida_bytes.is_struct(self.flag):
             mt.tid = self.extra["id"]
         if ida_bytes.is_off0(self.flag) or ida_bytes.is_off1(self.flag):
-            mt.ri = ida_nalt.refinfo_t(
-                self.extra["flags"],
-                self.extra["base"],
-                self.extra["target"],
-                self.extra["tdelta"],
-            )
+            mt.ri = ida_nalt.refinfo_t()
         if ida_bytes.is_strlit(self.flag):
             mt.strtype = self.extra["strtype"]
         struc = ida_struct.get_struc_id(self.sname)
