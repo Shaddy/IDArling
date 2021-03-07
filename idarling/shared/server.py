@@ -489,7 +489,7 @@ class Server(ServerSocket):
         self.save_config()
 
         # Check if any migration
-        self.migrate()
+        # self.migrate()
 
         # Initialize the storage
         self._storage = Storage(self.server_file("database.db"))

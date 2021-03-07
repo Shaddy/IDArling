@@ -533,7 +533,7 @@ class SaveDialog(OpenDialog):
         ftype = ida_loader.get_file_type_name()
         date_format = "%Y/%m/%d %H:%M"
         date = datetime.datetime.now().strftime(date_format)
-        project = Project(name, hash, file, ftype, date)
+        project = Project(name, date)
         d = self._plugin.network.send_packet(CreateProject.Query(project))
         d.add_callback(partial(self._project_created, project))
         d.add_errback(self._plugin.logger.exception)
@@ -570,15 +570,6 @@ class SaveDialog(OpenDialog):
 
     def _refresh_projects(self):
         super(SaveDialog, self)._refresh_projects()
-        hash = ida_nalt.retrieve_input_file_md5().lower()
-        if hash.endswith(b'\x00'):
-            hash = hash[0:-1]
-        hash = hash.hex()
-        for row in range(self._projects_table.rowCount()):
-            item = self._projects_table.item(row, 0)
-            project = item.data(Qt.UserRole)
-            if project.hash != hash:
-                item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
 
     def _binary_clicked(self):
         self._plugin.logger.debug("SaveDialog._binary_clicked()")

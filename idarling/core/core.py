@@ -65,6 +65,7 @@ class Core(Module):
     def __init__(self, plugin):
         super(Core, self).__init__(plugin)
         self._project = None
+        self._database = None
         self._binary = None
         self._snapshot = None
         self._tick = -1
